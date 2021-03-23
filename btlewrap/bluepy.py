@@ -91,6 +91,13 @@ class BluepyBackend(AbstractBackend):
         self.write_handle(handle, self._DATA_MODE_LISTEN)
         self._peripheral.withDelegate(delegate)
         return self._peripheral.waitForNotifications(notification_timeout)
+    
+    @wrap_exception
+    def wait_for_notification_no_write(self, handle: int, delegate, notification_timeout: float):
+        if self._peripheral is None:
+            raise BluetoothBackendException('not connected to backend')
+        self._peripheral.withDelegate(delegate)
+        return self._peripheral.waitForNotifications(notification_timeout)
 
     @staticmethod
     def supports_scanning() -> bool:
